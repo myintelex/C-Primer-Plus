@@ -8,13 +8,13 @@ void display(int hours, int mins)
 int main(int argc, char const *argv[])
 {
 	/* code */
-	int hour,mins;
+	int hours,mins;
 	std::cout << "Please enter hours:";
-	std::cin>>hour;
+	std::cin>>hours;
 	std::cout << "Please enter mins:";
 	std::cin>>mins;
 
-	display();
+	display(hours, mins);
 
 	return 0;
 }
