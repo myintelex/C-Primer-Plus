@@ -13,6 +13,8 @@ void print2()
 int main(int argc, char const *argv[])
 {
 	print1();
-	print2();	
+	print1();
+	print2();
+	print2();
 	return 0;
 }
