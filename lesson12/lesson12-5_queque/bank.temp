@@ -1,0 +1,79 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include "queque.h"
+const int MIN_PER_HR = 60;
+
+bool newcustomer(double x);
+
+int main(int argc, char const *argv[])
+{
+	using std::cin;
+	using std::cout;
+	using std::endl;
+	using std::ios_base;
+	std::srand(std::time(0));
+
+	cout << "Case Study: Bank of Heather Automatic Teller.\n";
+	cout << "Enter maxinum size of queque: ";
+	int qs;
+	cin >> qs;
+	Queque line(qs);
+
+	cout << "Enter the number of simulation hours: ";
+	int hours;
+	cin >> hours;
+
+	long cyclelimit = MIN_PER_HR * hours;
+
+	cout << "Enter the average number of customers per hour: ";
+	double perhour;
+	cin >> perhour;
+	double min_per_cust;
+	min_per_cust = MIN_PER_HR/perhour;
+
+	Item temp;
+	long turnaways = 0;
+	long customers = 0;
+	long serverd = 0;
+	long sum_line = 0;
+	int wait_time = 0;
+	long line_wait = 0;
+
+	while((double)line_wait/serverd > 1.0)
+	{
+		for(int cycle = 0; cycle < 6000; cycle++)
+		{
+			if(newcustomer(min_per_cust++))
+			{
+				if(line.isfull())
+					turnaways++;
+				else
+				{
+					customers++;
+					temp.set(cycle);
+					line.enqueque(temp);
+				}
+			}
+			if(wait_time <= 0 && !line.isempty())
+			{
+				line.dequeque(temp);
+				wait_time = temp.ptime();
+				line_wait += (cycle -temp.when());
+				serverd++;
+			}
+			if(wait_time > 0)
+				wait_time--;
+			sum_line += line.quequecount();
+		}
+	}
+
+	cout << "The customers arrived per hour must less than:" << min_per_cust;
+	cout << "Done~\n";
+	return 0;
+}
+
+bool newcustomer(double x)
+{
+	return (std::rand() * x/ RAND_MAX < 1);
+}
